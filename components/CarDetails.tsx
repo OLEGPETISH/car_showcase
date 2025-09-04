@@ -4,6 +4,7 @@ import { CarProps } from '@/types';
 import React, { Fragment } from 'react'
 import Image from 'next/image';
 import { Dialog, Transition } from '@headlessui/react';
+import { generateCarImageUrl } from '@/utils';
 
 interface CarDetailsProps {
   isOpen: boolean;
@@ -45,7 +46,7 @@ const CarDetails = ({ isOpen, closeModal, car }: CarDetailsProps) => {
 >
   <div className="relative h-50 w-full rounded-t-2xl bg-blue-500 flex items-center justify-center">
   <Image 
-    src="/hero.png" 
+    src={generateCarImageUrl(car, 'angle')} 
     alt="car model" 
     width={300} 
     height={200} 
@@ -72,7 +73,7 @@ const CarDetails = ({ isOpen, closeModal, car }: CarDetailsProps) => {
     <div className="flex gap-3">
   <div className="flex-1 relative w-full h-24 rounded-lg">
     <Image 
-      src="/hero.png" 
+      src={generateCarImageUrl(car, '29')} 
       alt="car model" 
       fill 
       priority 
@@ -81,7 +82,7 @@ const CarDetails = ({ isOpen, closeModal, car }: CarDetailsProps) => {
   </div>
   <div className="flex-1 relative w-full h-24 rounded-lg">
     <Image 
-      src="/hero.png" 
+      src={generateCarImageUrl(car, '33')} 
       alt="car model" 
       fill 
       priority 
@@ -90,13 +91,14 @@ const CarDetails = ({ isOpen, closeModal, car }: CarDetailsProps) => {
   </div>
   <div className="flex-1 relative w-full h-24 rounded-lg">
     <Image 
-      src="/hero.png" 
+      src={generateCarImageUrl(car, '13')} 
       alt="car model" 
       fill 
       priority 
       className="object-contain"
     />
   </div>
+  
 </div>
   </div>
 
