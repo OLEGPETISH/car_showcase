@@ -1,21 +1,18 @@
 "use client";
 
 import { CustomButtonProps } from '@/types';
-import Image from 'next/image';
+import React from 'react';
 
-const CustomButton = ({title,containerStyles,handleClick}: CustomButtonProps) => {
+const CustomButton = ({ title, containerStyles, handleClick, btnType }: CustomButtonProps) => {
   return (
-<button
-    disabled={false}
-    type="button"
-    className={`bg-primary-blue text-white font-bold py-2 px-4 rounded ${containerStyles}`}
-    onClick = {handleClick}
+    <button
+      type={btnType || "button"}
+className={`flex items-center justify-center font-bold py-2 px-6 min-w-[130px] ${containerStyles}`}
+      onClick={handleClick}
     >
-<span className = 'flex-1'>
-{title}
-</span>
-</button>
-)
-}
+      {title}
+    </button>
+  );
+};
 
 export default CustomButton;
