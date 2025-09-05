@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import SearchManufacturer from "./SearchManufacturer";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import SearchManufacturer from "./SearchManufacturer";
 
 const SearchButton = ({ otherClasses }: { otherClasses: string }) => (
   <button type="submit" className={`ml-2 z-10 ${otherClasses}`}>
@@ -18,58 +18,33 @@ const SearchButton = ({ otherClasses }: { otherClasses: string }) => (
 );
 
 const SearchBar = () => {
-  const [manufacturer, setManufacturer] = useState("");
-  const [model, setModel] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [manufacturer, setManufacturer] = useState(searchParams.get("manufacturer") || "");
+  const [model, setModel] = useState(searchParams.get("model") || "");
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!manufacturer && !model) return alert("Please fill in the search bar");
 
-    if (manufacturer === "" && model === "") {
-      return alert("Please fill in the search bar");
-    }
+    const params = new URLSearchParams();
+    if (model) params.set("model", model.toLowerCase());
+    if (manufacturer) params.set("manufacturer", manufacturer.toLowerCase());
 
-    updateSearchParams(
-      model.toLowerCase(), 
-      manufacturer.toLowerCase()
-    )
-  }
-
-  const updateSearchParams = (model: string, manufacturer: string) => {
-    const searchParams = new URLSearchParams(window.location.search);
-
-    if (model) {
-      searchParams.set("model", model);
-    } else {
-      searchParams.delete("model");
-    }
-
-    if (manufacturer) {
-      searchParams.set("manufacturer", manufacturer);
-    } else {
-      searchParams.delete("manufacturer");
-    }
-
-    const newPathname = `${window.location.pathname}?${searchParams.toString()}`;
-    router.push(newPathname);
+    router.push(`?${params.toString()}`);
   };
 
-
-
   return (
-    <form className="searchbar" onSubmit={handleSearch}>
+    <form className="searchbar flex flex-wrap gap-4" onSubmit={handleSearch}>
       {/* Производитель */}
-      <div className="searchbar__item flex items-center">
-        <SearchManufacturer
-          manufacturer={manufacturer}
-          setManufacturer={setManufacturer}
-        />
+      <div className="searchbar__item flex items-center relative">
+        <SearchManufacturer manufacturer={manufacturer} setManufacturer={setManufacturer} />
         <SearchButton otherClasses="sm:hidden" />
       </div>
 
       {/* Модель */}
       <div className="searchbar__item flex items-center relative">
-        <Image 
+        <Image
           src="/model-icon.png"
           width={25}
           height={25}
